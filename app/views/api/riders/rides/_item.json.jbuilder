@@ -9,5 +9,5 @@ json.origin_stop do
 end
 
 json.destination_stop do
-  json.(ride.destination_stop_point, :id, :start_at, :lat, :lng)
+  json.(ride.destination_spot_point, :id, :start_at, :lat, :lng)
 end

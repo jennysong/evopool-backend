@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 20170924150133) do
   create_table "user_rides", force: :cascade do |t|
     t.integer "trip_id"
     t.integer "origin_spot_point_id"
-    t.integer "destination_stop_point_id"
+    t.integer "destination_spot_point_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
