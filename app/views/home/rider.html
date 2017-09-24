@@ -66,6 +66,7 @@
             start_at = $("#rider-time").serializeObject()
             start_at = moment.tz([start_at.date, start_at.time].join(' '), 'Canada/Pacific')
             data = {start_at: start_at.toString(),from: rendered_markers[0].position.toJSON(), to: rendered_markers[1].position.toJSON()}
+            console.log('/api/riders/trips/search?' + $.param(data))
             $.ajax({
               url: '/api/riders/trips/search',
               type: 'post',

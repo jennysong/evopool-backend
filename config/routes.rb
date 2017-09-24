@@ -14,7 +14,7 @@ Rails.application.routes.draw do
       namespace :riders do
         resources :trips, only: [] do
           collection do
-            post :search
+            match :search, via: [:get, :post]
           end
 
         end
