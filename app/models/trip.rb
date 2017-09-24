@@ -1,8 +1,19 @@
 class Trip < ApplicationRecord
+  attr_accessor :origin_point, :destination_point
   has_many :spot_points, -> { order(:position) },  dependent: :destroy
 
   validates :start_at, :directions, :stops, presence: true
   validates_datetime :start_at, after: -> { Time.now + 1.hour }
+
+  def set_origin_point(spot_points)
+    self.origin_point = spot_points.find { |point| point.trip_id == id }
+
+  end
+
+  def set_destination_point(spot_points)
+    self.destination_point = spot_points.find { |point| point.trip_id == id }
+  end
+
 private
 
   before_validation :refresh_stops_from_waypoints
