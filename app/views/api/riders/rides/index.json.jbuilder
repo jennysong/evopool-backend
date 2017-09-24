@@ -1,0 +1,1 @@
+json.array! @rides, partial: 'item', as: :ride
