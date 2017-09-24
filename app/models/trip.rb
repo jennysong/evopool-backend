@@ -2,7 +2,7 @@ class Trip < ApplicationRecord
   attr_accessor :origin_point, :destination_point
   has_many :spot_points, -> { order(:position) },  dependent: :destroy
 
-  validates :start_at, :directions, :stops, presence: true
+  validates :start_at, :directions, presence: true
   validates_datetime :start_at, after: -> { Time.now + 1.hour }
 
   def set_origin_point(spot_points)
