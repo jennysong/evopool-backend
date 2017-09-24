@@ -21,7 +21,7 @@
   </head>
 
   <body>
-    <script type="text/javascript" src='/assets/application.js'></script>
+    <%= javascript_include_tag('application.js') %>
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBb4s9C_IS3Fe1YUWG_mDlRe1E7mfBuIb0&sensor=true"></script>
     <div id='rider-map'></div>
     <form id='rider-time' class='floating-view'>
