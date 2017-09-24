@@ -12,7 +12,7 @@ class Api::Riders::RidesController < Api::RidersController
     origin_point      = Trip::SpotPoint.find_by_id(ride_params[:origin_stop_id])
     destination_point = Trip::SpotPoint.find_by_id(ride_params[:destination_stop_id])
 
-    @ride = User::Ride.new trip: trip, origin_spot_point_id: origin_point, destination_stop_point_id: destination_point
+    @ride = User::Ride.new trip: trip, origin_spot_point: origin_point, destination_spot_point: destination_point
 
     if @ride.save
       render :show
