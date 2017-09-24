@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Evopool</title>
+    <style>
+      #rider-map {
+        position: absolute;
+        left: 0; top: 0; right: 0; bottom: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <script type="text/javascript" src='/assets/application'></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBb4s9C_IS3Fe1YUWG_mDlRe1E7mfBuIb0&sensor=true"></script>
+    <div id='rider-map'>
+    <script type='text/javascript'>
+      var service, latest_renderer, rendered_markers = []
+      service = new google.maps.DirectionsService();
+      var map = new google.maps.Map( document.getElementById('rider-map'), {'zoom':12, 'mapTypeId': google.maps.MapTypeId.ROADMAP, 'center': new google.maps.LatLng(49.2796502,-123.1116371,15) })
+
+      var render_direction = function(direction_result) {
+        renderer = new google.maps.DirectionsRenderer( {'draggable':true} );
+        renderer.setMap(map);
+        renderer.setDirections(direction_result);
+        return renderer;
+      }
+
+      var render_direction_from_attrs = function(attrs, callback) {
+        origin = new google.maps.LatLng(attrs.start.lat, attrs.start.lng)
+        destination = new google.maps.LatLng(attrs.end.lat, attrs.end.lng)
+        waypoints = _(attrs.waypoints).map(function(lat_lng) { return {location: new google.maps.LatLng(lat_lng[0], lat_lng[1]), stopover:false} })
+
+        service.route({ origin: origin, destination:  destination, waypoints: waypoints, 'travelMode': google.maps.DirectionsTravelMode.DRIVING},function(res,sts) {
+          if(callback instanceof Function) callback(res);
+        })
+      }
+
+      map.addListener('click', function(e) {
+        if(rendered_markers.length >= 2) {
+          rendered_markers.forEach(function(marker) { marker.setMap(null); })
+          rendered_markers.length = 0;
+          if(latest_renderer) latest_renderer.setMap(null);
+        } else {
+          var marker = new google.maps.Marker({
+            position: e.latLng.toJSON(),
+            map: map,
+          });
+          rendered_markers.push(marker)
+
+          if(rendered_markers.length == 2) {
+            data = {from: rendered_markers[0].position.toJSON(), to: rendered_markers[1].position.toJSON()}
+            $.ajax({
+              url: '/api/riders/trips/search',
+              type: 'post',
+              headers: { 'Content-Type': 'application/json' },
+              dataType: 'json',
+              data: JSON.stringify(data),
+              success: function(response) {
+                if(response.length == 0) alert('nothing to show')
+                _(response).each(function(trip_attrs) {
+                  render_direction_from_attrs(trip_attrs.directions, function(result) {
+                    latest_renderer = render_direction(result);
+                  });
+                })
+              }
+            })
+          }
+        }
+      })
+    </script>
+  </body>
+</html>

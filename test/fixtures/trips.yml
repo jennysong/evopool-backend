@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  from_lat: 9.99
+  from_lon: 9.99
+  to_lat: 9.99
+  to_lon: 1
+  directions: 
+
+two:
+  user_id: 1
+  from_lat: 9.99
+  from_lon: 9.99
+  to_lat: 9.99
+  to_lon: 1
+  directions: 
