@@ -19,7 +19,7 @@ private
     return @_search_params if @_search_params.present?
     @_search_params = params.permit(:start_at, :radius, from: [:lat, :lng], to: [:lat, :lng])
     @_search_params.tap do |whitelisted|
-      whitelisted[:start_at] = Time.parse whitelisted[:start_at]
+      whitelisted[:start_at] = whitelisted[:start_at].to_time
     end
     @_search_params
   end
