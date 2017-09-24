@@ -178,6 +178,10 @@
           });
         })
       })
+
+      var current_time = moment()
+      $("#register-form [name='start_at[date]']").val(current_time.format("YYYY-MM-DD"))
+      $("#register-form [name='start_at[time]']").val(current_time.format("H:mm"))
     </script>
   </body>
 </html>
