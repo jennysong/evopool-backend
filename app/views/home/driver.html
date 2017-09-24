@@ -139,7 +139,7 @@
       }
 
       trip_item_template = _.template(`
-        <li class='trip-item' data-trip-index='<%- index %>'>TRIP #<%- id %></li>
+        <li class='trip-item' data-trip-index='<%- index %>'>TRIP #<%- id %> - <%- moment(start_at).format('Do MMM YYYY - h:mm a') %></li>
       `)
       $list = $("#trip-list")
 
