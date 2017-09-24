@@ -1,7 +1,11 @@
 class Trip < ApplicationRecord
   has_many :spot_points, -> { order(:position) },  dependent: :destroy
 
-  before_save :refresh_stops_from_waypoints
+  validates :start_at, :directions, :stops, presence: true
+  validates_datetime :start_at, after: -> { Time.now + 1.hour }
+private
+
+  before_validation :refresh_stops_from_waypoints
 
   def refresh_stops_from_waypoints
     self.stops = []
@@ -20,7 +24,7 @@ class Trip < ApplicationRecord
 
     (stops||[]).each_with_index do |stop, index|
       lat, lng = stop
-      saved_points.push spot_points.create! lat: lat, lng: lng, position: index
+      saved_points.push spot_points.create! start_at: start_at, lat: lat, lng: lng, position: index
     end
 
 

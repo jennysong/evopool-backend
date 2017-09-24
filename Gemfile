@@ -18,6 +18,7 @@ gem 'devise'
 gem 'gravatar-ultimate'
 gem 'geocoder'
 gem 'faker'
+gem 'validates_timeliness', '~> 4.0'
 
 # gem 'paperclip'
 # gem 'aws-sdk', '~> 2.3.0'
