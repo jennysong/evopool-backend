@@ -1,14 +1,24 @@
 class Trip < ApplicationRecord
   has_many :spot_points, -> { order(:position) },  dependent: :destroy
 
+  before_save :refresh_stops_from_waypoints
+
+  def refresh_stops_from_waypoints
+    self.stops = []
+    self.stops.push directions['start'].values
+    directions['waypoints'].each do |data|
+      self.stops.push data
+    end
+    self.stops.push directions['end'].values
+  end
+
+  after_save :refresh_spot_points
+
   def refresh_spot_points
     spot_points.destroy_all
     saved_points = []
-    _stops = stops||[]
-    _stops.unshift directions['start'].values
-    _stops.push directions['end'].values
 
-    _stops.each_with_index do |stop, index|
+    (stops||[]).each_with_index do |stop, index|
       lat, lng = stop
       saved_points.push spot_points.create! lat: lat, lng: lng, position: index
     end
